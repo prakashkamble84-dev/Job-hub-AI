@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Candidate or Employer user profile record",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["candidate", "employer", "admin"] },
+        "whatsappNumber": { "type": "string", "maxLength": 30 },
+        "targetRole": { "type": "string", "maxLength": 128 },
+        "careerGoal": { "type": "string", "maxLength": 500 },
+        "preferredLocation": { "type": "string", "maxLength": 128 },
+        "companyName": { "type": "string", "maxLength": 128 },
+        "industry": { "type": "string", "maxLength": 128 },
+        "skills": { "type": "array" },
+        "onboardingCompleted": { "type": "boolean" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "displayName"]
+    },
+    "JobOpening": {
+      "title": "JobOpening",
+      "description": "Job opening created by an employer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "employerId": { "type": "string", "maxLength": 128 },
+        "employerName": { "type": "string", "maxLength": 128 },
+        "companyName": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 128 },
+        "department": { "type": "string", "maxLength": 128 },
+        "location": { "type": "string", "maxLength": 128 },
+        "workplaceType": { "type": "string", "enum": ["Remote", "On-site", "Hybrid"] },
+        "employmentType": { "type": "string", "enum": ["Full-time", "Contract", "Part-time", "Internship"] },
+        "experienceMinYears": { "type": "number" },
+        "salaryMin": { "type": "number" },
+        "salaryMax": { "type": "number" },
+        "salaryCurrency": { "type": "string", "maxLength": 10 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "requiredSkills": { "type": "array" },
+        "status": { "type": "string", "enum": ["OPEN", "PAUSED", "CLOSED"] },
+        "autoWhatsAppMatch": { "type": "boolean" },
+        "applicantsCount": { "type": "number" },
+        "matchedCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "employerId", "title", "companyName"]
+    },
+    "CandidateMatch": {
+      "title": "CandidateMatch",
+      "description": "AI candidate match result for a job opening",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "openingId": { "type": "string", "maxLength": 128 },
+        "candidateId": { "type": "string", "maxLength": 128 },
+        "candidateName": { "type": "string", "maxLength": 128 },
+        "candidateEmail": { "type": "string", "maxLength": 256 },
+        "candidatePhone": { "type": "string", "maxLength": 30 },
+        "matchPercentage": { "type": "number" },
+        "matchingSkills": { "type": "array" },
+        "missingSkills": { "type": "array" },
+        "aiRecommendation": { "type": "string", "maxLength": 1000 },
+        "whatsappSent": { "type": "boolean" },
+        "whatsappSentAt": { "type": "string" },
+        "status": { "type": "string", "enum": ["MATCHED", "NOTIFIED", "INTERVIEW_INVITED", "SHORTLISTED", "REJECTED"] }
+      },
+      "required": ["id", "openingId", "candidateId", "matchPercentage"]
+    },
+    "WhatsAppNotification": {
+      "title": "WhatsAppNotification",
+      "description": "WhatsApp alert log sent to candidate",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "recipientId": { "type": "string", "maxLength": 128 },
+        "recipientPhone": { "type": "string", "maxLength": 30 },
+        "recipientName": { "type": "string", "maxLength": 128 },
+        "jobTitle": { "type": "string", "maxLength": 128 },
+        "companyName": { "type": "string", "maxLength": 128 },
+        "matchScore": { "type": "number" },
+        "messageText": { "type": "string", "maxLength": 2000 },
+        "status": { "type": "string", "enum": ["DELIVERED", "SENT", "FAILED"] },
+        "sentAt": { "type": "string" }
+      },
+      "required": ["id", "recipientPhone", "jobTitle", "companyName"]
+    }
+  },
+  "firestore": {
+    "/profiles/{uid}": {
+      "schema": "UserProfile",
+      "description": "Candidate and employer profile documents"
+    },
+    "/job_openings/{openingId}": {
+      "schema": "JobOpening",
+      "description": "Employer job opening listings"
+    },
+    "/candidate_matches/{matchId}": {
+      "schema": "CandidateMatch",
+      "description": "AI candidate matches for employer openings"
+    },
+    "/whatsapp_notifications/{notificationId}": {
+      "schema": "WhatsAppNotification",
+      "description": "WhatsApp alert records"
+    },
+    "/applications/{applicationId}": {
+      "schema": "UserProfile",
+      "description": "Candidate submitted applications"
+    },
+    "/chat_threads/{threadId}": {
+      "schema": "UserProfile",
+      "description": "Candidate Gemini chat history threads"
+    }
+  }
+}

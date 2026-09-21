@@ -1,0 +1,6 @@
+{
+  "name": "JobHub AI",
+  "description": "Next-Gen Job Portal & AI Career Hub featuring Job Matching, Recruiter WhatsApp Alerts, AI Resume Analyzer, and Voice Practice.",
+  "requestFramePermissions": ["microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
